@@ -977,68 +977,54 @@
                     }
                 }
 
-                var find_player_list = function(root) {
-                    var current = root;
-                    while (current) {
-                        var args = current.arguments;
-                        for (var i = 0; i < args.length; i++) {
-                            if (args[i].players && args[i].players.list) {
-                                return args[i].players.list;
-                            }
-                        }
-                        current = current.caller;
-                    }
-                    return null;
-                }
-
-                // Fixed Original NameTags
-                if (window.options.orgNameTags) {
-                    var playerList = find_player_list(arguments.callee);
-
-                    for (var i = 0; playerList && i < playerList.length; i++) {
-                        for (var key in playerList[i]) {
-                            if (key.includes("Seen") || key.includes("seen")) {
-                                playerList[i][key] = true;
-                            }
-                        }
-                    }
-                }
-
                 // target selector - based on closest to aim
                 var closest = null,
                     closestAngle = Infinity;
                 var players = world.players.list;
 
-                if (!window.options.aimbot) return;
+                //if (!window.options.aimbot) return;
                 for (var i = 0; me.active && i < players.length; i++) {
                     var e = players[i];
                     if (e.isYou || !e.active || !e.objInstances || !isEnemy(e)) {
                         continue;
                     }
 
-                    // experimental prediction
-                    // just use normal xyz values instead for potentially better aim :shrug:
-                    var scale = Math.min(1.6, e.dt / (consts.serverSendRate * consts.interpolation));
-                    // this check is so that we don't shoot people that just respawn
-                    if (math.getDistance3D(e.x2, e.y2, e.z2, e.x, e.y, e.z) < 100) {
-                        e.x3 = e.x + (e.x2 - e.x) * scale;
-                        e.y3 = e.y + (e.y2 - e.y) * scale;
-                        e.z3 = e.z + (e.z2 - e.z) * scale;
+                    if (window.options.orgNameTags) {
+                        for (var key in players[i]) {
+                            if (key.includes("Seen") || key.includes("seen")) {
+                                players[i][key] = true;
+                            }
+                        }
+                    }
+
+                    if (window.options.aimbot) {
+                        // experimental prediction
+                        // just use normal xyz values instead for potentially better aim :shrug:
+                        var scale = Math.min(1.6, e.dt / (consts.serverSendRate * consts.interpolation));
+                        // this check is so that we don't shoot people that just respawn
+                        if (math.getDistance3D(e.x2, e.y2, e.z2, e.x, e.y, e.z) < 100) {
+                            e.x3 = e.x + (e.x2 - e.x) * scale;
+                            e.y3 = e.y + (e.y2 - e.y) * scale;
+                            e.z3 = e.z + (e.z2 - e.z) * scale;
+                        } else {
+                            e.x3 = e.x;
+                            e.y3 = e.y;
+                            e.z3 = e.z;
+                        }
+
+                        if (!isCloseEnough(e) || !canHit(e)) {
+                            continue;
+                        }
+
+                        var angle = calcAngleTo(e);
+                        if (angle < closestAngle) {
+                            closestAngle = angle;
+                            closest = e;
+                        }
                     } else {
-                        e.x3 = e.x;
-                        e.y3 = e.y;
-                        e.z3 = e.z;
+                        closest = null;
                     }
 
-                    if (!isCloseEnough(e) || !canHit(e)) {
-                        continue;
-                    }
-
-                    var angle = calcAngleTo(e);
-                    if (angle < closestAngle) {
-                        closestAngle = angle;
-                        closest = e;
-                    }
                 }
 
                 // aimbot
