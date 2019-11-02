@@ -1,4 +1,9 @@
-credits: https://github.com/hrt and me only for menu.
+credits: https://github.com/hrt and MasterP-kr for menu.
+
+# Additional stuff in this fork:
+* Auto Pistol feature added (turns any semi automatic weapon into an automatic)
+* Fixed original game ESP (an alternative to drawing boxes and shit manually around players)
+* Minor tweaks to the menu
 
 # Gold Standard Powered WheelChair
 Christmas is early,
