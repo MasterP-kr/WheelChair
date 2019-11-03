@@ -1,3 +1,5 @@
+# Detected, wait for new version!
+
 credits: https://github.com/hrt and MasterP-kr for menu.
 
 # Additional stuff in this fork:
