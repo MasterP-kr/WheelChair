@@ -198,6 +198,7 @@ WebFont.load({
     //Menu setup
 
     keyMap['menu'] = genKey();
+    const menu = new window[keyMap['MyGUI']](false, 0, 0, 250, 250, styles, "wheelchair", 1)
     global_invisible_define(keyMap['menu'], menu);
 
     const poweredWheelAimbot = menu.addFolder("Aimbot", true)
