@@ -197,10 +197,6 @@ WebFont.load({
 
     //Menu setup
 
-    keyMap['MyGUI'] = genKey();
-    global_invisible_define(keyMap['MyGUI'], MyGUI);
-    const menu = new window[keyMap['MyGUI']](false, 0, 0, 250, 250, styles, "wheelchair", 1)
-
     keyMap['menu'] = genKey();
     global_invisible_define(keyMap['menu'], menu);
 
